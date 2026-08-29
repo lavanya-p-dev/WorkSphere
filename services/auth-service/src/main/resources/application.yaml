@@ -18,3 +18,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        
+app:
+    jwt:
+      secret: "REPLACE_WITH_A_LONG_RANDOM_SECRET_KEY"
+      expiration: 86400000

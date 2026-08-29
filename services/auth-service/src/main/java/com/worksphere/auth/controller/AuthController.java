@@ -1,5 +1,7 @@
 package com.worksphere.auth.controller;
 
+import com.worksphere.auth.dto.LoginRequest;
+import com.worksphere.auth.dto.LoginResponse;
 import com.worksphere.auth.dto.RegisterRequest;
 import com.worksphere.auth.dto.RegisterResponse;
 import com.worksphere.auth.entity.User;
@@ -31,5 +33,11 @@ public class AuthController {
                 user.getEmail(),
                 user.getRole()
         );
+    }
+    @PostMapping("/login")
+    public LoginResponse login(
+            @Valid @RequestBody LoginRequest request) {
+
+        return authService.login(request);
     }
 }
