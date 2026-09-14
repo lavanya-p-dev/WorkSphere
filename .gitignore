@@ -16,6 +16,7 @@ target/
 *.iml
 media
 docs
+.metadata
 
 # OS
 .DS_Store

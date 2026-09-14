@@ -1,5 +1,6 @@
 package com.worksphere.auth.service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,9 +34,8 @@ public class JwtService {
 
         Date now = new Date();
 
-        Date expirationDate = new Date(
-                now.getTime() + expiration
-        );
+        Date expirationDate =
+                new Date(now.getTime() + expiration);
 
         return Jwts.builder()
                 .subject(email)
@@ -45,5 +45,33 @@ public class JwtService {
                 .expiration(expirationDate)
                 .signWith(secretKey)
                 .compact();
+    }
+
+    public String extractEmail(String token) {
+
+        return extractAllClaims(token)
+                .getSubject();
+    }
+
+    public boolean isTokenValid(String token) {
+
+        try {
+            Claims claims = extractAllClaims(token);
+
+            return !claims.getExpiration()
+                    .before(new Date());
+
+        } catch (Exception exception) {
+            return false;
+        }
+    }
+
+    private Claims extractAllClaims(String token) {
+
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }
